@@ -366,7 +366,7 @@
 
       <div class="grid">
         <div class="field">
-          <label>Name of Client <span class="req">*</span></label>
+          <label>Name of Client (Last Name, First Name, Middle Name) <span class="req">*</span></label>
           <input type="text" id="f_name" required>
         </div>
         <div class="field">
@@ -392,11 +392,11 @@
           </select>
         </div>
         <div class="field">
-          <label>Appointment Place <span class="opt">optional</span></label>
+          <label>Appointment Place <span class="opt"></span></label>
           <input type="text" id="f_apptPlace">
         </div>
         <div class="field">
-          <label>Appointment Date <span class="opt">optional</span></label>
+          <label>Appointment Date <span class="opt"></span></label>
           <input type="date" id="f_apptDate">
         </div>
         <div class="field">
@@ -425,7 +425,7 @@
 
         <!-- Authorization letter (image or PDF) -->
         <div class="field full">
-          <label>Authorization Letter <span class="req">*</span></label>
+          <label>Authorization Letter<span class="req">*</span></label>
           <div class="filewrap uploader" id="f_authLetter_drop">
             <input type="file" id="f_authLetter" accept="image/*,.pdf" hidden>
             <input type="file" id="f_authLetter_cam" accept="image/*" capture="environment" hidden>
@@ -461,7 +461,7 @@
         </div>
       </div>
 
-      <button class="btn" id="submitBtn" onclick="submitForm()" style="margin-top:18px;">Submit request</button>
+      <button class="btn" id="submitBtn" onclick="submitForm()" style="margin-top:18px;" align="center">Submit request</button>
       <div class="msg" id="formMsg"></div>
     </div>
   </section>
@@ -474,7 +474,12 @@
       <p class="section-note">Enter the staff password to view submitted requests.</p>
       <input type="text" id="pwInput" placeholder="Password" style="max-width:260px;">
       <br>
-      <button class="btn" onclick="unlock()">View responses</button>
+      <button class="btn admin-btn" onclick="unlock()" title="Admin login" aria-label="Admin login">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+        </svg>
+      </button>
       <div class="msg" id="lockMsg"></div>
     </div>
 
