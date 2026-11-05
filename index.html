@@ -177,6 +177,42 @@
     margin-top:6px;
     display:none;
   }
+
+  /* ---- Uploader: attach / drag & drop / take photo ---- */
+  .filewrap.uploader{
+    text-align:center;
+    padding:16px 12px;
+    transition:background .15s, border-color .15s;
+  }
+  .filewrap.uploader.dragover{
+    background:#EAF1F4;
+    border-color:var(--navy);
+  }
+  .filewrap.uploader .drop-hint{
+    margin:0 0 10px;
+    font-size:.82rem;
+    color:var(--ink-soft);
+  }
+  .photo-actions{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .photo-actions button{
+    padding:8px 14px;
+    border:1px solid var(--navy);
+    border-radius:var(--radius);
+    background:#fff;
+    color:var(--navy);
+    font-family:'Inter',sans-serif;
+    font-size:.82rem;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .photo-actions button:hover{background:var(--navy);color:#fff;}
+  .filewrap.uploader .filename.error{color:var(--warn);}
+
   .consent-row{
     display:flex;
     align-items:flex-start;
@@ -199,27 +235,6 @@
     font-size:.88rem;
     cursor:pointer;
   }
-  
-  
-  <!-- ================= drag photo ================= -->
-  .dropzone {
-    border: 2px dashed #aaa;
-    border-radius: 8px;
-    padding: 16px;
-    text-align: center;
-    transition: background .15s, border-color .15s;
-  }
-  .dropzone.dragover { background: #eef6ff; border-color: #3b82f6; }
-  .dropzone p { margin: 0 0 10px; color: #666; }
-  .photo-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-  .photo-actions button {
-    padding: 8px 14px; border: 1px solid #ccc; border-radius: 6px;
-    background: #fff; cursor: pointer; font-size: 14px;
-  }
-  .photo-actions button:hover { background: #f5f5f5; }
-  
-  
-  
   .btn:hover{background:var(--navy-deep);}
   .btn.secondary{
     background:transparent;
@@ -332,7 +347,7 @@
 
 <header class="top">
   <div>
-    <h1>PRC NCR TRANSACTION</h1>
+    <h1>Client Transaction Intake</h1>
     <div class="sub">Submit a request &amp; track its status</div>
   </div>
   <div class="header-actions">
@@ -393,62 +408,50 @@
           <input type="text" id="f_office" required>
         </div>
 
-		
-		<div class="field full">
-		  <label>Upload photo of Transaction Form <span class="req">*</span></label>
+        <!-- Transaction form photo (images only) -->
+        <div class="field full">
+          <label>Upload photo of Transaction Form <span class="req">*</span></label>
+          <div class="filewrap uploader" id="f_photo_drop">
+            <input type="file" id="f_photo" accept="image/*" hidden>
+            <input type="file" id="f_photo_cam" accept="image/*" capture="environment" hidden>
+            <p class="drop-hint">Drag &amp; drop a photo here, or choose an option:</p>
+            <div class="photo-actions">
+              <button type="button" id="f_photo_attach">📎 Attach photo</button>
+              <button type="button" id="f_photo_camera">📷 Take photo</button>
+            </div>
+            <div class="filename" id="f_photo_name"></div>
+          </div>
+        </div>
 
-		  <div class="filewrap">
-			<!-- Main input: used by your form (no capture, so users can attach or drag) -->
-			<input type="file" id="f_photo" accept="image/*" required hidden>
-			<!-- Camera-only input: opens the camera on mobile -->
-			<input type="file" id="f_photo_cam" accept="image/*" capture="environment" hidden>
+        <!-- Authorization letter (image or PDF) -->
+        <div class="field full">
+          <label>Authorization Letter <span class="req">*</span></label>
+          <div class="filewrap uploader" id="f_authLetter_drop">
+            <input type="file" id="f_authLetter" accept="image/*,.pdf" hidden>
+            <input type="file" id="f_authLetter_cam" accept="image/*" capture="environment" hidden>
+            <p class="drop-hint">Drag &amp; drop a photo or PDF here, or choose an option:</p>
+            <div class="photo-actions">
+              <button type="button" id="f_authLetter_attach">📎 Attach file</button>
+              <button type="button" id="f_authLetter_camera">📷 Take photo</button>
+            </div>
+            <div class="filename" id="f_authLetter_name"></div>
+          </div>
+        </div>
 
-			<div class="dropzone" id="f_photo_drop">
-			  <p>Drag &amp; drop a photo here</p>
-			  <div class="photo-actions">
-				<button type="button" id="btn_attach">📎 Attach photo</button>
-				<button type="button" id="btn_camera">📷 Take photo</button>
-			  </div>
-			</div>
-
-			<div class="filename" id="f_photo_name"></div>
-		  </div>
-		</div>
-
-
-		<div class="field full">
-		  <label>Authorization Letter <span class="req">*</span></label>
-		  <div class="filewrap">
-			<input type="file" id="f_authLetter" accept="image/*,.pdf" required hidden>
-			<input type="file" id="f_authLetter_cam" accept="image/*" capture="environment" hidden>
-
-			<div class="dropzone" id="f_authLetter_drop">
-			  <p>Drag &amp; drop a photo or PDF here</p>
-			  <div class="photo-actions">
-				<button type="button" id="f_authLetter_attach">📎 Attach file</button>
-				<button type="button" id="f_authLetter_camera">📷 Take photo</button>
-			  </div>
-			</div>
-			<div class="filename" id="f_authLetter_name"></div>
-		  </div>
-		</div>
-
-		<div class="field full">
-		  <label>Attachments (COGS/Surety Bond) <span class="opt">not required</span></label>
-		  <div class="filewrap">
-			<input type="file" id="f_attachments" accept="image/*,.pdf" hidden>
-			<input type="file" id="f_attachments_cam" accept="image/*" capture="environment" hidden>
-
-			<div class="dropzone" id="f_attachments_drop">
-			  <p>Drag &amp; drop a photo or PDF here</p>
-			  <div class="photo-actions">
-				<button type="button" id="f_attachments_attach">📎 Attach file</button>
-				<button type="button" id="f_attachments_camera">📷 Take photo</button>
-			  </div>
-			</div>
-			<div class="filename" id="f_attachments_name"></div>
-		  </div>
-		</div>
+        <!-- Attachments (image or PDF, optional) -->
+        <div class="field full">
+          <label>Attachments (COGS/Surety Bond) <span class="opt">not required</span></label>
+          <div class="filewrap uploader" id="f_attachments_drop">
+            <input type="file" id="f_attachments" accept="image/*,.pdf" hidden>
+            <input type="file" id="f_attachments_cam" accept="image/*" capture="environment" hidden>
+            <p class="drop-hint">Drag &amp; drop a photo or PDF here, or choose an option:</p>
+            <div class="photo-actions">
+              <button type="button" id="f_attachments_attach">📎 Attach file</button>
+              <button type="button" id="f_attachments_camera">📷 Take photo</button>
+            </div>
+            <div class="filename" id="f_attachments_name"></div>
+          </div>
+        </div>
 
         <div class="field full">
           <div class="consent-row">
@@ -544,7 +547,7 @@
 /* =======================================================================
    CONFIGURE THIS: paste the Web App URL from your Apps Script deployment.
    ======================================================================= */
-const API_URL = "https://script.google.com/macros/s/AKfycbxAxs4hVzWxBh6gEm55LRi4zQtJ0oRnFduVitF8cc_tfYU7384QQufX94yhBV1h_90CpA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxX994KRY7fGc4d20taZeN0kTt4M_kZqzUKw2u6-LdwkpWDtTrgWgJBU9T0gHLmmuoU/exec";
 
 const REFRESH_MS = 15000;
 let refreshTimer = null;
@@ -572,10 +575,52 @@ function toggleTab(){
 ['f_photo','f_authLetter','f_attachments'].forEach(id=>{
   document.getElementById(id).addEventListener('change', e=>{
     const el = document.getElementById(id+'_name');
+    el.classList.remove('error');
     if (e.target.files[0]){ el.textContent = '✓ '+e.target.files[0].name; el.style.display='block'; }
     else { el.style.display='none'; }
   });
 });
+
+/* ---------------- uploader: attach / drag & drop / take photo ----------------
+   Each field has: main input (#id), camera input (#id_cam), drop area (#id_drop),
+   buttons (#id_attach, #id_camera) and a filename label (#id_name).
+   Files from the camera or drag & drop are copied into the main input, so
+   submitForm() and fileToPayload() keep working unchanged.                    */
+function initUploader(id, allowPdf){
+  const main = document.getElementById(id);
+  const cam  = document.getElementById(id + '_cam');
+  const drop = document.getElementById(id + '_drop');
+  const label = document.getElementById(id + '_name');
+
+  function setFile(file){
+    if (!file) return;
+    const isImage = file.type.startsWith('image/');
+    const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+    if (!(isImage || (allowPdf && isPdf))){
+      label.textContent = allowPdf ? 'Please choose an image or PDF file.' : 'Please choose an image file.';
+      label.classList.add('error');
+      label.style.display = 'block';
+      return;
+    }
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    main.files = dt.files;
+    main.dispatchEvent(new Event('change', { bubbles: true })); // triggers filename preview above
+  }
+
+  document.getElementById(id + '_attach').addEventListener('click', () => main.click());
+  document.getElementById(id + '_camera').addEventListener('click', () => cam.click());
+  cam.addEventListener('change', () => { setFile(cam.files[0]); cam.value = ''; });
+
+  ['dragenter','dragover'].forEach(ev =>
+    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('dragover'); }));
+  ['dragleave','drop'].forEach(ev =>
+    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('dragover'); }));
+  drop.addEventListener('drop', e => setFile(e.dataTransfer.files[0]));
+}
+initUploader('f_photo', false);
+initUploader('f_authLetter', true);
+initUploader('f_attachments', true);
 
 function fileToPayload(fileInput){
   return new Promise((resolve, reject)=>{
@@ -618,44 +663,6 @@ async function submitForm(){
     msg.textContent = 'Transaction form photo and Authorization Letter are required.';
     return;
   }
-  /* ---------------- drag photo ---------------- */
-  
-  function initUploader(id) {
-  const main  = document.getElementById(id);
-  const cam   = document.getElementById(id + '_cam');
-  const drop  = document.getElementById(id + '_drop');
-  const label = document.getElementById(id + '_name');
-
-  function setFile(file) {
-    if (!file) return;
-    const ok = file.type.startsWith('image/') || file.type === 'application/pdf' ||
-               file.name.toLowerCase().endsWith('.pdf');
-    if (!ok) { label.textContent = 'Please choose an image or PDF file.'; return; }
-    const dt = new DataTransfer();
-    dt.items.add(file);
-    main.files = dt.files;          // keeps form submission and validation working
-    label.textContent = file.name;
-    main.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-
-  document.getElementById(id + '_attach').addEventListener('click', () => main.click());
-  document.getElementById(id + '_camera').addEventListener('click', () => cam.click());
-
-  main.addEventListener('change', () => {
-    label.textContent = main.files[0] ? main.files[0].name : '';
-  });
-  cam.addEventListener('change', () => setFile(cam.files[0]));
-
-  ['dragenter', 'dragover'].forEach(ev =>
-    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('dragover'); }));
-  ['dragleave', 'drop'].forEach(ev =>
-    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('dragover'); }));
-  drop.addEventListener('drop', e => setFile(e.dataTransfer.files[0]));
-}
-
-initUploader('f_authLetter');
-initUploader('f_attachments');
-
 
   const submitBtn = document.getElementById('submitBtn');
   submitBtn.disabled = true;
@@ -700,7 +707,10 @@ initUploader('f_attachments');
       document.getElementById('f_consent').checked = false;
       ['f_photo','f_authLetter','f_attachments'].forEach(id=>{
         document.getElementById(id).value = '';
-        document.getElementById(id+'_name').style.display='none';
+        document.getElementById(id+'_cam').value = '';
+        const nameEl = document.getElementById(id+'_name');
+        nameEl.classList.remove('error');
+        nameEl.style.display='none';
       });
     }
   } catch(err){
