@@ -64,10 +64,14 @@
   header.top .tab-toggle:hover{
     background:#D9AC5C;
   }
-  header.top .tab-toggle.on-responses{
-    background:transparent;
-    border-color:rgba(255,255,255,.5);
-    color:var(--cream);
+  header.top .tab-toggle.icon-only{
+    width:40px;
+    height:40px;
+    padding:0;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
   }
   header.top .header-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
   header.top .tab-toggle.ghost{
@@ -352,7 +356,12 @@
   </div>
   <div class="header-actions">
     <button class="tab-toggle ghost" onclick="openTrackModal()">View Request</button>
-    <button id="tabToggleBtn" class="tab-toggle" onclick="toggleTab()">Responses</button>
+    <button id="tabToggleBtn" class="tab-toggle icon-only" onclick="toggleTab()" title="Admin" aria-label="Admin">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+      </svg>
+    </button>
   </div>
 </header>
 
@@ -474,14 +483,8 @@
       <p class="section-note">Enter the staff password to view submitted requests.</p>
       <input type="text" id="pwInput" placeholder="Password" style="max-width:260px;">
       <br>
-      <button class="btn admin-btn" onclick="unlock()" title="Admin login" aria-label="Admin login">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="8" r="4"/>
-          <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
-        </svg>
-      </button>
-      <div class="msg" id="lockMsg"></div>
-    </div>
+      
+      <button class="btn" onclick="unlock()">View responses</button>
 
     <div id="responsesArea" style="display:none;">
       <div class="card">
@@ -565,9 +568,9 @@ function showTab(tab){
   document.getElementById('tabResponses').style.display = tab === 'responses' ? '' : 'none';
   document.getElementById('mainEl').classList.toggle('wide', tab === 'responses');
 
-  const toggleBtn = document.getElementById('tabToggleBtn');
-  toggleBtn.textContent = tab === 'responses' ? 'Submit Request' : 'Responses';
-  toggleBtn.classList.toggle('on-responses', tab === 'responses');
+  const label = tab === 'responses' ? 'Back to request form' : 'Admin';
+  toggleBtn.title = label;
+  toggleBtn.setAttribute('aria-label', label);
 
   if (tab !== 'responses' && refreshTimer){ clearInterval(refreshTimer); refreshTimer = null; }
 }
